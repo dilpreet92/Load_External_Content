@@ -1,10 +1,9 @@
-function checkEvent(getElement) {
-  this.blog = getElement;
-  this.heading = this.blog.find("h3");
+function LoadExternalContent(getElement) {
+  this.heading = getElement;
   this.targetDiv = "";
 }
 
-checkEvent.prototype.insertDiv = function() {
+LoadExternalContent.prototype.insertDiv = function() {
   var _this = this;
   this.heading
     .each(function() {
@@ -13,7 +12,7 @@ checkEvent.prototype.insertDiv = function() {
     });
 };
 
-checkEvent.prototype.loadContent = function(currentHeading,event) {
+LoadExternalContent.prototype.getContent = function(currentHeading,event) {
   var anchor = currentHeading.find("a"),
       targetDiv = currentHeading.data("targetDiv"),
       href = anchor.attr("href"),
@@ -23,16 +22,16 @@ checkEvent.prototype.loadContent = function(currentHeading,event) {
   targetDiv.load(url + " #" +id);
 };
 
-checkEvent.prototype.bindEvents = function() {
+LoadExternalContent.prototype.bindEvents = function() {
   var _this = this;
   this.insertDiv();
   this.heading.on("click", function(event) {
-    _this.loadContent($(this),event);
+    _this.getContent($(this),event);
   });
 };
 
 $(document).ready(function() {
-  var blog = $("#blog");
-  var checkEventObj = new checkEvent(blog);
-  checkEventObj.bindEvents(); 
+  var heading = $("#blog").find("h3");
+  var loadContentObj = new LoadExternalContent(heading);
+  loadContentObj.bindEvents(); 
 });
